@@ -1,0 +1,22 @@
+version: '3'
+services:
+    #app is a service which boots up the app - build from root (.)
+    app:
+        build: .
+        depends_on:
+            - mariadb
+        ports:
+            - '8080:80'
+        #The volumes key accepts an array of folders separated by a colon(:). The first path is the local path to the folder or file,and the second is the desired  path inside the container
+        volumes:
+            - '.:/srv/app'
+        links:
+            - 'mariadb:mariadb'
+     #mariadb is a service which boots up a database client and set up a db
+    mariadb:
+        image: mariadb:10.2
+        ports:
+            - '13306:3306'
+        environment:
+            - MYSQL_DATABASE=dockerphp
+            - MYSQL_ROOT_PASSWORD=password
